@@ -39,6 +39,7 @@ div:has(> .auth__form--checkbox) {
     align-items: center;
     justify-content: space-between;
     font-family: 'Work Sans', sans-serif;
+    gap: 4px;
 }
 
 .auth__form--checkbox {

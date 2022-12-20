@@ -1,20 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello InstructorController!{% endblock %}
-
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/xampp/htdocs/trainingsfactory/src/Controller/InstructorController.php'|file_link(0) }}">src/Controller/InstructorController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/xampp/htdocs/trainingsfactory/templates/instructor/index.html.twig'|file_link(0) }}">templates/instructor/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <section class="instructor">
+        <div class="container">
+            <div class="row">
+                <div class="instructor__header">
+                <h1 class="instructor__header--title">Instructeur Dashboard</h1>
+                    <a href="{{ path('instructor_lesson_new') }}" class="instructor__header--btn btn">Nieuwe Les</a>
+                </div>
+                <div class="line"></div>
+                <h5 class="instructor__subtitle">Mijn Lessen</h5>
+                <ul class="instructor__list table__header">
+                    <li class="instructor__list--item table__header--item">Trainingsvorm</li>
+                    <li class="instructor__list--item table__header--item">Dag</li>
+                    <li class="instructor__list--item table__header--item">Begin Tijd</li>
+                    <li class="instructor__list--item table__header--item">Eind Tijd</li>
+                    <li class="instructor__list--item table__header--item">Ingeschreven Leden</li>
+                </ul>
+                {% for lesson in lessons %}
+                    <ul class="instructor__list">
+                        <li class="instructor__list--item">{{ lesson.sport.name }}</li>
+                        <li class="instructor__list--item">{{ lesson.date|date("jS F") }}</li>
+                        <li class="instructor__list--item">{{ lesson.begintime|date("H:i") }}</li>
+                        <li class="instructor__list--item">{{ lesson.endtime|date("H:i") }}</li>
+                        <li class="instructor__list--item">{{ lesson.getUser()|length }}</li>
+                    </ul>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
 {% endblock %}

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\LessonRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -25,6 +27,17 @@ class Lesson
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $end_time = null;
+
+    #[ORM\ManyToMany(targetEntity: user::class, inversedBy: 'lessons')]
+    private Collection $user;
+
+    #[ORM\ManyToOne(inversedBy: 'instructLessons')]
+    private ?user $instructor = null;
+
+    public function __construct()
+    {
+        $this->user = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -75,6 +88,42 @@ class Lesson
     public function setEndTime(\DateTimeInterface $end_time): self
     {
         $this->end_time = $end_time;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, user>
+     */
+    public function getUser(): Collection
+    {
+        return $this->user;
+    }
+
+    public function addUser(user $user): self
+    {
+        if (!$this->user->contains($user)) {
+            $this->user->add($user);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(user $user): self
+    {
+        $this->user->removeElement($user);
+
+        return $this;
+    }
+
+    public function getInstructor(): ?user
+    {
+        return $this->instructor;
+    }
+
+    public function setInstructor(?user $instructor): self
+    {
+        $this->instructor = $instructor;
 
         return $this;
     }

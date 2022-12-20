@@ -17,11 +17,14 @@ class Lesson
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTimeInterface $time = null;
-
     #[ORM\ManyToOne]
     private ?Sport $sport = null;
+
+    #[ORM\Column(type: Types::TIME_MUTABLE)]
+    private ?\DateTimeInterface $begin_time = null;
+
+    #[ORM\Column(type: Types::TIME_MUTABLE)]
+    private ?\DateTimeInterface $end_time = null;
 
     public function getId(): ?int
     {
@@ -40,18 +43,6 @@ class Lesson
         return $this;
     }
 
-    public function getTime(): ?\DateTimeInterface
-    {
-        return $this->time;
-    }
-
-    public function setTime(\DateTimeInterface $time): self
-    {
-        $this->time = $time;
-
-        return $this;
-    }
-
     public function getSport(): ?Sport
     {
         return $this->sport;
@@ -60,6 +51,30 @@ class Lesson
     public function setSport(?Sport $sport): self
     {
         $this->sport = $sport;
+
+        return $this;
+    }
+
+    public function getBeginTime(): ?\DateTimeInterface
+    {
+        return $this->begin_time;
+    }
+
+    public function setBeginTime(\DateTimeInterface $begin_time): self
+    {
+        $this->begin_time = $begin_time;
+
+        return $this;
+    }
+
+    public function getEndTime(): ?\DateTimeInterface
+    {
+        return $this->end_time;
+    }
+
+    public function setEndTime(\DateTimeInterface $end_time): self
+    {
+        $this->end_time = $end_time;
 
         return $this;
     }

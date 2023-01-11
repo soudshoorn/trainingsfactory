@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 11 jan 2023 om 10:27
+-- Gegenereerd op: 11 jan 2023 om 13:00
 -- Serverversie: 10.4.24-MariaDB
 -- PHP-versie: 8.1.6
 
@@ -42,7 +42,8 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 ('DoctrineMigrations\\Version20221214104109', '2022-12-20 09:28:13', 198),
 ('DoctrineMigrations\\Version20221220083151', '2022-12-20 09:32:31', 38),
 ('DoctrineMigrations\\Version20230111085408', '2023-01-11 09:54:30', 39),
-('DoctrineMigrations\\Version20230111085718', '2023-01-11 09:57:22', 37);
+('DoctrineMigrations\\Version20230111085718', '2023-01-11 09:57:22', 37),
+('DoctrineMigrations\\Version20230111114614', '2023-01-11 12:46:30', 96);
 
 -- --------------------------------------------------------
 
@@ -65,6 +66,17 @@ CREATE TABLE `lesson` (
 INSERT INTO `lesson` (`id`, `sport_id`, `date`, `begin_time`, `end_time`) VALUES
 (1, 1, '2023-01-23', '12:30:00', '14:00:00'),
 (2, 2, '2023-01-24', '13:00:00', '14:30:00');
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `lesson_user`
+--
+
+CREATE TABLE `lesson_user` (
+  `lesson_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -99,9 +111,9 @@ CREATE TABLE `sport` (
 --
 
 INSERT INTO `sport` (`id`, `name`, `image`) VALUES
-(1, 'Boxing', '/img/boxing'),
-(2, 'Kickboxing', '/img/kickboxing'),
-(3, 'MMA', '/img/mma');
+(1, 'Boxing', '/img/boxing.png'),
+(2, 'Kickboxing', '/img/kickboxing.png'),
+(3, 'MMA', '/img/mma.png');
 
 -- --------------------------------------------------------
 
@@ -145,6 +157,14 @@ ALTER TABLE `doctrine_migration_versions`
 ALTER TABLE `lesson`
   ADD PRIMARY KEY (`id`),
   ADD KEY `IDX_F87474F3AC78BCF8` (`sport_id`);
+
+--
+-- Indexen voor tabel `lesson_user`
+--
+ALTER TABLE `lesson_user`
+  ADD PRIMARY KEY (`lesson_id`,`user_id`),
+  ADD KEY `IDX_B4E2102DCDF80196` (`lesson_id`),
+  ADD KEY `IDX_B4E2102DA76ED395` (`user_id`);
 
 --
 -- Indexen voor tabel `messenger_messages`
@@ -205,6 +225,13 @@ ALTER TABLE `user`
 --
 ALTER TABLE `lesson`
   ADD CONSTRAINT `FK_F87474F3AC78BCF8` FOREIGN KEY (`sport_id`) REFERENCES `sport` (`id`);
+
+--
+-- Beperkingen voor tabel `lesson_user`
+--
+ALTER TABLE `lesson_user`
+  ADD CONSTRAINT `FK_B4E2102DA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `FK_B4E2102DCDF80196` FOREIGN KEY (`lesson_id`) REFERENCES `lesson` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

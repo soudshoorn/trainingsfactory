@@ -16,4 +16,14 @@ class UserController extends AbstractController
             'controller_name' => 'UserController',
         ]);
     }
+
+    #[Route('/lesson/{lesson}', name: 'app_lesson')]
+    public function lesson($lesson): Response
+    {
+
+        return $this->render('pages/lesson.html.twig', [
+            'lesson' => $lesson,
+        ]);
+    }
+
 }

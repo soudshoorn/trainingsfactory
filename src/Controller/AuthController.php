@@ -14,6 +14,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
@@ -52,8 +53,9 @@ class AuthController extends AbstractController
 //                    ->htmlTemplate('auth/confirmation_email.html.twig')
 //            );
 
-            return $this->redirectToRoute('app_index');
+            return $this->redirectToRoute('app_login');
         }
+
 
         return $this->render('auth/register.html.twig', [
             'registrationForm' => $form->createView(),

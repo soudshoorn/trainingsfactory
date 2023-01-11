@@ -1,5 +1,24 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    HALLLOOO
+    {% if app.user %}
+        {% for lesson in lessons %}
+            {% for sport in sports %}
+                {% if lesson.sport.id == sport.id %}
+                    <b>
+                        {{ sport.name }}
+                    </b>
+                {% endif %}
+            {% endfor %}
+            <br>
+            {{ lesson.date | date("d/m/Y") }}
+            <br>
+            <b>Start Time:</b>
+            {{ lesson.beginTime | date("H:i") }}
+            <br><b>End Time:</b>
+            {{ lesson.endTime | date("H:i") }}
+            <br>
+            <br>
+        {% endfor %}
+    {% endif %}
 {% endblock %}

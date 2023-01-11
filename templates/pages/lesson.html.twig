@@ -4,4 +4,8 @@
 {% endblock %}
 {% block body %}
 
+    <p>Weet u het zeker</p>
+    <button onclick="location.href='{{ path('app_index') }}'">Nee</button>
+    <button onclick="location.href='{{ path('app_signUp', {lesson: lesson}) }}'">Ja</button>
+
 {% endblock %}

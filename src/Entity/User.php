@@ -37,9 +37,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Lesson::class, mappedBy: 'user')]
     private Collection $lessons;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: LessonUser::class)]
+    private Collection $lessonUsers;
+
     public function __construct()
     {
         $this->lessons = new ArrayCollection();
+        $this->lessonUsers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -125,29 +129,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Lesson>
+     * @return Collection<int, LessonUser>
      */
-    public function getLessons(): Collection
+    public function getLessonUsers(): Collection
     {
-        return $this->lessons;
+        return $this->lessonUsers;
     }
 
-    public function addLesson(Lesson $lesson): self
+    public function addLessonUser(LessonUser $lessonUser): self
     {
-        if (!$this->lessons->contains($lesson)) {
-            $this->lessons->add($lesson);
-            $lesson->addUser($this);
+        if (!$this->lessonUsers->contains($lessonUser)) {
+            $this->lessonUsers->add($lessonUser);
+            $lessonUser->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeLesson(Lesson $lesson): self
+    public function removeLessonUser(LessonUser $lessonUser): self
     {
-        if ($this->lessons->removeElement($lesson)) {
-            $lesson->removeUser($this);
+        if ($this->lessonUsers->removeElement($lessonUser)) {
+            // set the owning side to null (unless already changed)
+            if ($lessonUser->getUser() === $this) {
+                $lessonUser->setUser(null);
+            }
         }
 
         return $this;
     }
+
 }

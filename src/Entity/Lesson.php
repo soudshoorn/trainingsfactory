@@ -28,12 +28,13 @@ class Lesson
     #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $end_time = null;
 
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'lessons')]
-    private Collection $user;
+    #[ORM\OneToMany(mappedBy: 'lesson', targetEntity: LessonUser::class)]
+    private Collection $lessonUsers;
 
     public function __construct()
     {
         $this->user = new ArrayCollection();
+        $this->lessonUsers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -90,26 +91,34 @@ class Lesson
     }
 
     /**
-     * @return Collection<int, User>
+     * @return Collection<int, LessonUser>
      */
-    public function getUser(): Collection
+    public function getLessonUsers(): Collection
     {
-        return $this->user;
+        return $this->lessonUsers;
     }
 
-    public function addUser(User $user): self
+    public function addLessonUser(LessonUser $lessonUser): self
     {
-        if (!$this->user->contains($user)) {
-            $this->user->add($user);
+        if (!$this->lessonUsers->contains($lessonUser)) {
+            $this->lessonUsers->add($lessonUser);
+            $lessonUser->setLesson($this);
         }
 
         return $this;
     }
 
-    public function removeUser(User $user): self
+    public function removeLessonUser(LessonUser $lessonUser): self
     {
-        $this->user->removeElement($user);
+        if ($this->lessonUsers->removeElement($lessonUser)) {
+            // set the owning side to null (unless already changed)
+            if ($lessonUser->getLesson() === $this) {
+                $lessonUser->setLesson(null);
+            }
+        }
 
         return $this;
     }
+
+
 }

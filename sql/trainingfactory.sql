@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 11 jan 2023 om 13:00
+-- Gegenereerd op: 11 jan 2023 om 15:27
 -- Serverversie: 10.4.24-MariaDB
 -- PHP-versie: 8.1.6
 
@@ -43,7 +43,9 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 ('DoctrineMigrations\\Version20221220083151', '2022-12-20 09:32:31', 38),
 ('DoctrineMigrations\\Version20230111085408', '2023-01-11 09:54:30', 39),
 ('DoctrineMigrations\\Version20230111085718', '2023-01-11 09:57:22', 37),
-('DoctrineMigrations\\Version20230111114614', '2023-01-11 12:46:30', 96);
+('DoctrineMigrations\\Version20230111114614', '2023-01-11 12:46:30', 96),
+('DoctrineMigrations\\Version20230111133217', '2023-01-11 14:32:36', 331),
+('DoctrineMigrations\\Version20230111134105', '2023-01-11 14:41:15', 215);
 
 -- --------------------------------------------------------
 
@@ -74,8 +76,9 @@ INSERT INTO `lesson` (`id`, `sport_id`, `date`, `begin_time`, `end_time`) VALUES
 --
 
 CREATE TABLE `lesson_user` (
-  `lesson_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `lesson_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -162,9 +165,9 @@ ALTER TABLE `lesson`
 -- Indexen voor tabel `lesson_user`
 --
 ALTER TABLE `lesson_user`
-  ADD PRIMARY KEY (`lesson_id`,`user_id`),
-  ADD KEY `IDX_B4E2102DCDF80196` (`lesson_id`),
-  ADD KEY `IDX_B4E2102DA76ED395` (`user_id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_B4E2102DA76ED395` (`user_id`),
+  ADD KEY `IDX_B4E2102DCDF80196` (`lesson_id`);
 
 --
 -- Indexen voor tabel `messenger_messages`
@@ -199,6 +202,12 @@ ALTER TABLE `lesson`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT voor een tabel `lesson_user`
+--
+ALTER TABLE `lesson_user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT voor een tabel `messenger_messages`
 --
 ALTER TABLE `messenger_messages`
@@ -230,8 +239,8 @@ ALTER TABLE `lesson`
 -- Beperkingen voor tabel `lesson_user`
 --
 ALTER TABLE `lesson_user`
-  ADD CONSTRAINT `FK_B4E2102DA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `FK_B4E2102DCDF80196` FOREIGN KEY (`lesson_id`) REFERENCES `lesson` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `FK_B4E2102DA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `FK_B4E2102DCDF80196` FOREIGN KEY (`lesson_id`) REFERENCES `lesson` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

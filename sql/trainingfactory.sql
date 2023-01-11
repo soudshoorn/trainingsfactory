@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 20 dec 2022 om 09:34
+-- Gegenereerd op: 11 jan 2023 om 10:27
 -- Serverversie: 10.4.24-MariaDB
 -- PHP-versie: 8.1.6
 
@@ -40,7 +40,9 @@ CREATE TABLE `doctrine_migration_versions` (
 INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
 ('DoctrineMigrations\\Version20221214090414', '2022-12-14 10:04:18', 519),
 ('DoctrineMigrations\\Version20221214104109', '2022-12-20 09:28:13', 198),
-('DoctrineMigrations\\Version20221220083151', '2022-12-20 09:32:31', 38);
+('DoctrineMigrations\\Version20221220083151', '2022-12-20 09:32:31', 38),
+('DoctrineMigrations\\Version20230111085408', '2023-01-11 09:54:30', 39),
+('DoctrineMigrations\\Version20230111085718', '2023-01-11 09:57:22', 37);
 
 -- --------------------------------------------------------
 
@@ -55,6 +57,14 @@ CREATE TABLE `lesson` (
   `begin_time` time NOT NULL,
   `end_time` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `lesson`
+--
+
+INSERT INTO `lesson` (`id`, `sport_id`, `date`, `begin_time`, `end_time`) VALUES
+(1, 1, '2023-01-23', '12:30:00', '14:00:00'),
+(2, 2, '2023-01-24', '13:00:00', '14:30:00');
 
 -- --------------------------------------------------------
 
@@ -84,6 +94,15 @@ CREATE TABLE `sport` (
   `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Gegevens worden geëxporteerd voor tabel `sport`
+--
+
+INSERT INTO `sport` (`id`, `name`, `image`) VALUES
+(1, 'Boxing', '/img/boxing'),
+(2, 'Kickboxing', '/img/kickboxing'),
+(3, 'MMA', '/img/mma');
+
 -- --------------------------------------------------------
 
 --
@@ -104,7 +123,11 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `email`, `roles`, `password`, `is_verified`) VALUES
 (1, 'guest@gmail.com', '[]', '$2y$13$we6TtQY8Rgd3sy/nZkhfAuV5GnNrWOg3rHsXaC5UqZ.KlNtScn/uO', 0),
-(2, 'admin@gmail.com', '[\"ROLE_ADMIN\"]', '$2y$13$Y4ZL3lPt8L1KwrRTR4rXT.V/ny3h2YYc.fb8fGtSRGXWrxvbz6GOG', 0);
+(2, 'admin@gmail.com', '[\"ROLE_ADMIN\"]', '$2y$13$Y4ZL3lPt8L1KwrRTR4rXT.V/ny3h2YYc.fb8fGtSRGXWrxvbz6GOG', 0),
+(3, 'a@a.a', '[\"ROLE_USER\"]', '$2y$13$Z4e3aY90aoauGEqdvkBf/OEi.p37Xpp9jd1TuBB/D7C8mWmDap1GW', 0),
+(4, 'a@a.aa', '[\"ROLE_USER\"]', '$2y$13$KETEyRgqVkS/r6FNStQWMOiJy7.9ByqCyD6yGmuSdIh3jp29NMEs2', 0),
+(5, 'a@a.ab', '[\"ROLE_USER\"]', '$2y$13$XqcdLa53Lhq88bLSGy/9GepPPAner1.VNXRzlMJqWK3azH7lr96fe', 0),
+(6, 'a@a.abc', '[\"ROLE_USER\"]', '$2y$13$NAOVBofc79TWgVL9IadyHejFfEvij0q2sKByAu8zpTyxVcPqWkqYi', 0);
 
 --
 -- Indexen voor geëxporteerde tabellen
@@ -153,7 +176,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT voor een tabel `lesson`
 --
 ALTER TABLE `lesson`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT voor een tabel `messenger_messages`
@@ -165,13 +188,13 @@ ALTER TABLE `messenger_messages`
 -- AUTO_INCREMENT voor een tabel `sport`
 --
 ALTER TABLE `sport`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT voor een tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Beperkingen voor geëxporteerde tabellen

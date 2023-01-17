@@ -34,16 +34,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
-    #[ORM\ManyToMany(targetEntity: Lesson::class, mappedBy: 'user')]
-    private Collection $lessons;
 
-    #[ORM\OneToMany(mappedBy: 'instructor', targetEntity: Lesson::class)]
-    private Collection $instructLessons;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: LessonUser::class, cascade: ['remove'])]
+    private Collection $lessonUsers;
 
     public function __construct()
     {
-        $this->lessons = new ArrayCollection();
-        $this->instructLessons = new ArrayCollection();
+        $this->lessonUsers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -129,59 +126,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Lesson>
+     * @return Collection<int, LessonUser>
      */
-    public function getLessons(): Collection
+    public function getLessonUsers(): Collection
     {
-        return $this->lessons;
+        return $this->lessonUsers;
     }
 
-    public function addLesson(Lesson $lesson): self
+    public function addLessonUser(LessonUser $lessonUser): self
     {
-        if (!$this->lessons->contains($lesson)) {
-            $this->lessons->add($lesson);
-            $lesson->addUser($this);
+        if (!$this->lessonUsers->contains($lessonUser)) {
+            $this->lessonUsers->add($lessonUser);
+            $lessonUser->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeLesson(Lesson $lesson): self
+    public function removeLessonUser(LessonUser $lessonUser): self
     {
-        if ($this->lessons->removeElement($lesson)) {
-            $lesson->removeUser($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Lesson>
-     */
-    public function getInstructLessons(): Collection
-    {
-        return $this->instructLessons;
-    }
-
-    public function addInstructLesson(Lesson $instructLesson): self
-    {
-        if (!$this->instructLessons->contains($instructLesson)) {
-            $this->instructLessons->add($instructLesson);
-            $instructLesson->setInstructor($this);
-        }
-
-        return $this;
-    }
-
-    public function removeInstructLesson(Lesson $instructLesson): self
-    {
-        if ($this->instructLessons->removeElement($instructLesson)) {
+        if ($this->lessonUsers->removeElement($lessonUser)) {
             // set the owning side to null (unless already changed)
-            if ($instructLesson->getInstructor() === $this) {
-                $instructLesson->setInstructor(null);
+            if ($lessonUser->getUser() === $this) {
+                $lessonUser->setUser(null);
             }
         }
 
         return $this;
     }
+
 }

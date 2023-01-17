@@ -1,5 +1,41 @@
 {% extends 'base.html.twig' %}
-
+{% block head %}
+    <link rel="stylesheet" href="{{ asset('/css/lessons.css') }}">
+{% endblock %}
 {% block body %}
-    HALLLOOO
+    {% for message in app.flashes('signUp') %}
+        <p>
+            {{ message }}
+        </p>
+    {% endfor %}
+
+    {% for lesson in lessons %}
+        <div class="card__lesson">
+            {% for sport in sports %}
+                {% if lesson.sport.id == sport.id %}
+                    <img src="{{ asset(sport.image) }}" height="200px">
+                    <br>
+                    <b>
+                        {{ sport.name }}
+                    </b>
+                {% endif %}
+            {% endfor %}
+            <br>
+            {{ lesson.date | date("d/m/Y") }}
+            <br>
+            <b>Start Time:</b>
+            {{ lesson.beginTime | date("H:i") }}
+            <br><b>End Time:</b>
+            {{ lesson.endTime | date("H:i") }}
+            <br>
+            {% if app.user %}
+                <a href="{{ path('app_lesson', {'lesson': lesson.id}) }}">Schrijf je in!</a>
+            {% else %}
+                <p>Wil je inschrijven?</p>
+                <a href="{{ path('app_login') }}">log dan in</a>
+            {% endif %}
+        </div>
+        <br>
+
+    {% endfor %}
 {% endblock %}

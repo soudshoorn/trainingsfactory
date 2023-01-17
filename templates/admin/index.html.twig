@@ -1,20 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AdminController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    {% for message in app.flashes('admin') %}
+        <p>
+            {{ message }}
+        </p>
+    {% endfor %}
+    {% for user in users %}
+        {% if app.user.id == user.id %}
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/xampp/htdocs/trainingsfactory/src/Controller/AdminController.php'|file_link(0) }}">src/Controller/AdminController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/xampp/htdocs/trainingsfactory/templates/admin/index.html.twig'|file_link(0) }}">templates/admin/index.html.twig</a></code></li>
-    </ul>
-</div>
+        {% else %}
+            {{ user.email }}
+            {{ user.roles[0] }}
+            <button onclick="location.href='{{ path('admin_editUser', {userId: user.id}) }}'">Edit</button>
+            <button onclick="location.href='{{ path('admin_deleteUserPage', {userId: user.id}) }}'">Delete</button>
+            <br>
+        {% endif %}
+    {% endfor %}
 {% endblock %}

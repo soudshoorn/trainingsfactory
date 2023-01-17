@@ -14,6 +14,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
@@ -34,6 +35,7 @@ class AuthController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user->setRoles(['ROLE_USER']);
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
@@ -43,16 +45,17 @@ class AuthController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-                (new TemplatedEmail())
-                    ->from(new Address('no-reply@trainingsfactory.nl', 'Trainings Factory'))
-                    ->to($user->getEmail())
-                    ->subject('Please Confirm your Email')
-                    ->htmlTemplate('auth/confirmation_email.html.twig')
-            );
+//            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+//                (new TemplatedEmail())
+//                    ->from(new Address('no-reply@trainingsfactory.nl', 'Trainings Factory'))
+//                    ->to($user->getEmail())
+//                    ->subject('Please Confirm your Email')
+//                    ->htmlTemplate('auth/confirmation_email.html.twig')
+//            );
 
-            return $this->redirectToRoute('app_index');
+            return $this->redirectToRoute('app_login');
         }
+
 
         return $this->render('auth/register.html.twig', [
             'registrationForm' => $form->createView(),

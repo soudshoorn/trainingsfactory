@@ -162,6 +162,61 @@ nav {
     display: block;
 }
 
+/*
+
+    INSTRUCTOR
+
+*/
+
+.instructor__list--item {
+    width: 100%;
+    max-width: calc(100% / 5);
+    text-align: center;
+    padding: 12px 8px;
+}
+
+.instructor__list {
+    display: flex;
+    justify-content: space-between;
+}
+
+.instructor__subtitle {
+    font-size: 20px;
+    padding: 4px 0;
+}
+
+.table__header {
+    display: flex;
+    justify-content: space-between;
+    background-color: #5F8D4E;
+    border-radius: 4px;
+    color: white;
+    padding: 4px 2px;
+    font-weight: 600;
+}
+
+.instructor__header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.line {
+    margin: 12px 0;
+    border: 2px #f5f5f5 solid;
+    border-radius: 2px;
+}
+
+/*
+
+    FORM
+
+*/
+
+.form__input {
+    padding: 8px 4px;
+    border: 2px solid #0b2e13;
+    margin: 0 8px;
+}
 
 
 

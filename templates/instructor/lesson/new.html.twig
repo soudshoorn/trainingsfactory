@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="instructor__new">
+        <div class="container">
+            <div class="row">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <button class="instructor__new--btn btn">{{ button_label|default('Aanmaken') }}
+                </button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

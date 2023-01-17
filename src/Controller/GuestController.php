@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class GuestController extends AbstractController
 {
     #[Route('/', name: 'app_index')]
-    public function index(LessonRepository $lessonRepository, SportRepository $sportRepository, UserInterface $user, LessonUserRepository $lessonUserRepository): Response
+    public function index(LessonRepository $lessonRepository, SportRepository $sportRepository): Response
     {
 //        if ($user) {
 //            $lessonUser = $lessonUserRepository->findBy(['user'=> $user]);

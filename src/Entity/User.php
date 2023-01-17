@@ -34,15 +34,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
-    #[ORM\ManyToMany(targetEntity: Lesson::class, mappedBy: 'user')]
-    private Collection $lessons;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: LessonUser::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: LessonUser::class, cascade: ['remove'])]
     private Collection $lessonUsers;
 
     public function __construct()
     {
-        $this->lessons = new ArrayCollection();
         $this->lessonUsers = new ArrayCollection();
     }
 

@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <p>Wilt u {{ user.email }} verwijderen?</p>
+    <button onclick="location.href='{{ path('admin_index') }}'">Nee</button>
+    <button onclick="location.href='{{ path('admin_deleteUser', {userId: user.id}) }}'">Ja</button>
+
+{% endblock %}

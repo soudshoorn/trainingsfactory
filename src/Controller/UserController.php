@@ -60,7 +60,6 @@ class UserController extends AbstractController
     public function lessonSignOut($lessonUser, EntityManagerInterface $entityManager, LessonUserRepository $lessonUserRepository): Response
     {
         $lesson = $lessonUserRepository->find($lessonUser);
-//        dd($lesson);
         $entityManager->remove($lesson);
         $entityManager->flush();
 

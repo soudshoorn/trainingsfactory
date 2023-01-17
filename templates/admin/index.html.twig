@@ -2,10 +2,20 @@
 
 
 {% block body %}
+    {% for message in app.flashes('admin') %}
+        <p>
+            {{ message }}
+        </p>
+    {% endfor %}
     {% for user in users %}
-        {{ user.email }}
-        <button onclick="location.href='{{ path('admin_editUser', {userId: user.id}) }}'">Edit</button>
-        <button onclick="location.href='{{ path('admin_deleteUser', {userId: user.id}) }}'">Delete</button>
-        <br>
+        {% if app.user.id == user.id %}
+
+        {% else %}
+            {{ user.email }}
+            {{ user.roles[0] }}
+            <button onclick="location.href='{{ path('admin_editUser', {userId: user.id}) }}'">Edit</button>
+            <button onclick="location.href='{{ path('admin_deleteUserPage', {userId: user.id}) }}'">Delete</button>
+            <br>
+        {% endif %}
     {% endfor %}
 {% endblock %}

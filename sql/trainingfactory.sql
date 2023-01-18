@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.3.0-dev+20220531.aadb8cc914
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 11 jan 2023 om 15:27
+-- Gegenereerd op: 18 jan 2023 om 01:12
 -- Serverversie: 10.4.24-MariaDB
--- PHP-versie: 8.1.6
+-- PHP-versie: 8.1.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -45,7 +45,8 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 ('DoctrineMigrations\\Version20230111085718', '2023-01-11 09:57:22', 37),
 ('DoctrineMigrations\\Version20230111114614', '2023-01-11 12:46:30', 96),
 ('DoctrineMigrations\\Version20230111133217', '2023-01-11 14:32:36', 331),
-('DoctrineMigrations\\Version20230111134105', '2023-01-11 14:41:15', 215);
+('DoctrineMigrations\\Version20230111134105', '2023-01-11 14:41:15', 215),
+('DoctrineMigrations\\Version20230117212224', '2023-01-17 21:22:34', 117);
 
 -- --------------------------------------------------------
 
@@ -58,16 +59,19 @@ CREATE TABLE `lesson` (
   `sport_id` int(11) DEFAULT NULL,
   `date` date NOT NULL,
   `begin_time` time NOT NULL,
-  `end_time` time NOT NULL
+  `end_time` time NOT NULL,
+  `instructor_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `lesson`
 --
 
-INSERT INTO `lesson` (`id`, `sport_id`, `date`, `begin_time`, `end_time`) VALUES
-(1, 1, '2023-01-23', '12:30:00', '14:00:00'),
-(2, 2, '2023-01-24', '13:00:00', '14:30:00');
+INSERT INTO `lesson` (`id`, `sport_id`, `date`, `begin_time`, `end_time`, `instructor_id`) VALUES
+(1, 1, '2023-01-17', '13:30:00', '14:00:00', 2),
+(2, 2, '2023-01-24', '13:00:00', '14:30:00', 2),
+(3, 3, '2023-01-17', '11:00:00', '12:00:00', 2),
+(4, 1, '2023-01-17', '00:00:00', '00:00:00', 2);
 
 -- --------------------------------------------------------
 
@@ -80,6 +84,15 @@ CREATE TABLE `lesson_user` (
   `user_id` int(11) NOT NULL,
   `lesson_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `lesson_user`
+--
+
+INSERT INTO `lesson_user` (`id`, `user_id`, `lesson_id`) VALUES
+(1, 2, 1),
+(2, 2, 1),
+(6, 2, 3);
 
 -- --------------------------------------------------------
 
@@ -141,8 +154,7 @@ INSERT INTO `user` (`id`, `email`, `roles`, `password`, `is_verified`) VALUES
 (2, 'admin@gmail.com', '[\"ROLE_ADMIN\"]', '$2y$13$Y4ZL3lPt8L1KwrRTR4rXT.V/ny3h2YYc.fb8fGtSRGXWrxvbz6GOG', 0),
 (3, 'a@a.a', '[\"ROLE_USER\"]', '$2y$13$Z4e3aY90aoauGEqdvkBf/OEi.p37Xpp9jd1TuBB/D7C8mWmDap1GW', 0),
 (4, 'a@a.aa', '[\"ROLE_USER\"]', '$2y$13$KETEyRgqVkS/r6FNStQWMOiJy7.9ByqCyD6yGmuSdIh3jp29NMEs2', 0),
-(5, 'a@a.ab', '[\"ROLE_USER\"]', '$2y$13$XqcdLa53Lhq88bLSGy/9GepPPAner1.VNXRzlMJqWK3azH7lr96fe', 0),
-(6, 'a@a.abc', '[\"ROLE_USER\"]', '$2y$13$NAOVBofc79TWgVL9IadyHejFfEvij0q2sKByAu8zpTyxVcPqWkqYi', 0);
+(5, 'a@a.ab', '[\"ROLE_USER\"]', '$2y$13$XqcdLa53Lhq88bLSGy/9GepPPAner1.VNXRzlMJqWK3azH7lr96fe', 0);
 
 --
 -- Indexen voor geëxporteerde tabellen
@@ -159,7 +171,8 @@ ALTER TABLE `doctrine_migration_versions`
 --
 ALTER TABLE `lesson`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_F87474F3AC78BCF8` (`sport_id`);
+  ADD KEY `IDX_F87474F3AC78BCF8` (`sport_id`),
+  ADD KEY `IDX_F87474F38C4FC193` (`instructor_id`);
 
 --
 -- Indexen voor tabel `lesson_user`
@@ -199,13 +212,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT voor een tabel `lesson`
 --
 ALTER TABLE `lesson`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT voor een tabel `lesson_user`
 --
 ALTER TABLE `lesson_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT voor een tabel `messenger_messages`
@@ -233,6 +246,7 @@ ALTER TABLE `user`
 -- Beperkingen voor tabel `lesson`
 --
 ALTER TABLE `lesson`
+  ADD CONSTRAINT `FK_F87474F38C4FC193` FOREIGN KEY (`instructor_id`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `FK_F87474F3AC78BCF8` FOREIGN KEY (`sport_id`) REFERENCES `sport` (`id`);
 
 --
@@ -246,3 +260,6 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+

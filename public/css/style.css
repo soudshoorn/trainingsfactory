@@ -390,8 +390,9 @@ footer {
 }
 
 .lessons__list {
-    display: grid;
-    grid-template-columns: auto auto auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .lessons__list--item {
@@ -406,6 +407,7 @@ footer {
 
 .lessons__item--img {
     width: 200px;
+    border-radius: 8px;
 }
 
 /*
@@ -434,6 +436,38 @@ div:has(> .form__input) {
 .verify__buttons {
     display: flex;
     gap: 20px;
+}
+
+/*
+
+    RULES
+
+*/
+
+.rules__list--item {
+    max-width: 80%;
+    margin: 12px 0;
+    list-style-type: disc;
+}
+
+/*
+
+    CONTACT
+
+*/
+
+.contact__wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.contact__map {
+    width: 100%;
+    max-width: 50%;
+}
+
+.contact__list {
+    font-size: 24px;
 }
 
 /*

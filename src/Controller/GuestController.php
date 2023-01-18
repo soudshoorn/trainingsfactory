@@ -25,6 +25,24 @@ class GuestController extends AbstractController
         ]);
     }
 
+    #[Route('/rules', name: 'app_rules')]
+    public function rules(): Response
+    {
+
+        return $this->render('pages/rules.html.twig', [
+            'controller_name' => 'GuestController',
+        ]);
+    }
+
+    #[Route('/contact', name: 'app_contact')]
+    public function contact(): Response
+    {
+
+        return $this->render('pages/contact.html.twig', [
+            'controller_name' => 'GuestController',
+        ]);
+    }
+
     #[Route('/lessons/{date}', name: 'app_lessons')]
     public function lessons(LessonRepository $lessonRepository, SportRepository $sportRepository, Request $request, $date): Response
     {

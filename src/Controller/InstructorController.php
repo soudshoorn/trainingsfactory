@@ -31,6 +31,17 @@ class InstructorController extends AbstractController
         ]);
     }
 
+    #[Route('/instructor/list/{id}', name: 'instructor_list')]
+    public function instructorList(LessonRepository $lessonRepository, int $id): Response
+    {
+        $lesson = $lessonRepository->find($id);
+
+        return $this->render('instructor/list.html.twig', [
+            'lesson' => $lesson,
+            'controller_name' => 'InstructorController',
+        ]);
+    }
+
     #[Route('/instructor/lesson/new', name: 'instructor_lesson_new')]
     public function newLesson(Request $request): Response
     {

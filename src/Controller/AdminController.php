@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Sport;
+use App\Form\SportEditType;
 use App\Form\UserType;
 use App\Repository\SportRepository;
 use App\Repository\UserRepository;
@@ -27,21 +28,71 @@ class AdminController extends AbstractController
         ]);
     }
 
+    #[Route('/sport/new', name: 'admin_new_sport')]
+    public function newSport(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $sport = new Sport();
+        $form = $this->createForm(SportEditType::class, $sport);
+        $form->handleRequest($request);
+        $filePathName = "";
+
+        if ($form->isSubmitted() && $form->isRequired()) {
+            $image = $form->get('image')->getData();
+            $fileFolder = __DIR__ . '/../../public/img/';
+            $filePathName = md5(uniqid()) . "." . $image->getClientOriginalExtension();
+            try {
+                $image->move($fileFolder, $filePathName);
+            } catch (FileException $e) {
+                $this->addFlash(
+                    'danger',
+                    'Er is een fout opgetreden, probeer het later opnieuw.'
+                );
+                return $this->redirectToRoute('admin_index');
+            }
+
+            $sport->setImage("/img/" . $filePathName);
+            $entityManager->persist($sport);
+            $entityManager->flush();
+            $this->addFlash('success', 'De nieuwe sport is succesvol toegevoegd');
+            return $this->redirectToRoute('admin_index');
+        }
+        return $this->render('admin/edit_sport.html.twig', [
+            'controller_name' => 'AdminController',
+            'form' => $form->createView(),
+        ]);
+    }
+
     #[Route('/sport/edit/{id}', name: 'admin_edit_sport')]
     public function editSport(SportRepository $sportRepository, int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
         $sport = $sportRepository->find($id);
-        $form = $this->createForm(UserType::class, $sport);
+        $form = $this->createForm(SportEditType::class, $sport);
         $form->handleRequest($request);
+        $filePathName = "";
+
         if ($form->isSubmitted() && $form->isRequired()) {
+            $image = $form->get('image')->getData();
+            $fileFolder = __DIR__ . '/../../public/img/';
+            $filePathName = md5(uniqid()) . "." . $image->getClientOriginalExtension();
+            try {
+                $image->move($fileFolder, $filePathName);
+            } catch (FileException $e) {
+                $this->addFlash(
+                    'danger',
+                    'Er is een fout opgetreden, probeer het later opnieuw.'
+                );
+                return $this->redirectToRoute('admin_index');
+            }
+
+            $sport->setImage("/img/" . $filePathName);
             $entityManager->persist($sport);
             $entityManager->flush();
             $this->addFlash('success', 'De sport is succesvol gewijzigd');
             return $this->redirectToRoute('admin_index');
         }
-        return $this->render('admin/edit_user.html.twig', [
+        return $this->render('admin/edit_sport.html.twig', [
             'controller_name' => 'AdminController',
-            'form'=> $form->createView(),
+            'form' => $form->createView(),
         ]);
     }
 
@@ -59,7 +110,7 @@ class AdminController extends AbstractController
         }
         return $this->render('admin/edit_user.html.twig', [
             'controller_name' => 'AdminController',
-            'form'=> $form->createView(),
+            'form' => $form->createView(),
         ]);
     }
 
@@ -73,11 +124,11 @@ class AdminController extends AbstractController
     }
 
     #[Route('/sport/delete/verify/{id}', name: 'admin_delete_sport_page')]
-    public function deleteSportPage(UserRepository $userRepository, int $id): Response
+    public function deleteSportPage(SportRepository $sportRepository, int $id): Response
     {
-        $user = $userRepository->find($id);
+        $sport = $sportRepository->find($id);
         return $this->render('admin/delete_sport.html.twig', [
-            'user' => $user
+            'sport' => $sport
         ]);
     }
 
@@ -92,12 +143,12 @@ class AdminController extends AbstractController
     }
 
     #[Route('/sport/delete/{id}', name: 'admin_delete_sport')]
-    public function deleteSport(UserRepository $userRepository, $id, EntityManagerInterface $entityManager): Response
+    public function deleteSport(SportRepository $sportRepository, $id, EntityManagerInterface $entityManager): Response
     {
-        $user = $userRepository->find($id);
-        $entityManager->remove($user);
+        $sport = $sportRepository->find($id);
+        $entityManager->remove($sport);
         $entityManager->flush();
-        $this->addFlash('success', 'De gebruiker is succesvol verwijderd');
+        $this->addFlash('success', 'De sport is succesvol verwijderd');
         return $this->redirectToRoute('admin_index');
     }
 }

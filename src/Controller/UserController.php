@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\LessonUser;
+use App\Form\NewLessonType;
 use App\Form\RegistrationFormType;
 use App\Form\SignUpFormType;
+use App\Form\UserEditType;
 use App\Repository\LessonRepository;
 use App\Repository\LessonUserRepository;
 use App\Repository\SportRepository;
@@ -19,18 +21,34 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class UserController extends AbstractController
 {
     #[Route('/user', name: 'user_index')]
-    public function index(UserInterface $user, LessonUserRepository $lessonUserRepository, SportRepository $sportRepository, LessonRepository $lessonRepository): Response
+    public function index(UserInterface $user, LessonUserRepository $lessonUserRepository, SportRepository $sportRepository, LessonRepository $lessonRepository, Request $request): Response
     {
         $lessonUser = $lessonUserRepository->findBy(['user' => $user]);
         $sports = $sportRepository->findAll();
         $lessons = $lessonRepository->findAll();
+
+        $user = $this->getUser();
+        $form = $this->createForm(UserEditType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->doctrine->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash(
+                'success',
+                'Je account is succesvol gewijzigd.'
+            );
+            return $this->redirectToRoute('user_index');
+        }
 
         return $this->render('user/index.html.twig', [
             'controller_name' => 'UserController',
             'lessonsUser' => $lessonUser,
             'sports' => $sports,
             'lessons' => $lessons,
-
+            'form' => $form->createView(),
         ]);
     }
 

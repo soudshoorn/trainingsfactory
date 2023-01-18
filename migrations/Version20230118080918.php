@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230117212224 extends AbstractMigration
+final class Version20230118080918 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,16 +20,12 @@ final class Version20230117212224 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE lesson ADD instructor_id INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE lesson ADD CONSTRAINT FK_F87474F38C4FC193 FOREIGN KEY (instructor_id) REFERENCES user (id)');
-        $this->addSql('CREATE INDEX IDX_F87474F38C4FC193 ON lesson (instructor_id)');
+        $this->addSql('ALTER TABLE user ADD firstname VARCHAR(255) NOT NULL, ADD lastname VARCHAR(255) NOT NULL, ADD gender VARCHAR(255) NOT NULL, ADD adress VARCHAR(255) NOT NULL, ADD postal VARCHAR(255) NOT NULL, ADD city VARCHAR(255) NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE lesson DROP FOREIGN KEY FK_F87474F38C4FC193');
-        $this->addSql('DROP INDEX IDX_F87474F38C4FC193 ON lesson');
-        $this->addSql('ALTER TABLE lesson DROP instructor_id');
+        $this->addSql('ALTER TABLE user DROP firstname, DROP lastname, DROP gender, DROP adress, DROP postal, DROP city');
     }
 }

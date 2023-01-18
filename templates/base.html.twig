@@ -34,7 +34,8 @@
                 <ul class="nav__list">
                     <li class="nav__list--link nav__static"><a class="nav__list--hyper" href="{{ path('app_index') }}">Home</a>
                     </li>
-                    <li class="nav__list--link nav__static"><a class="nav__list--hyper" href="{{ path('app_lessons', {date: "now"|date('U')}) }}">Lesrooster</a>
+                    <li class="nav__list--link nav__static"><a class="nav__list--hyper"
+                                                               href="{{ path('app_lessons', {date: "now"|date('U')}) }}">Lesrooster</a>
                     </li>
                     {% if is_granted('ROLE_ADMIN') %}
                         <li class="nav__list--link nav__static"><a class="nav__list--hyper"
@@ -43,11 +44,15 @@
                         <li class="nav__list--link nav__static"><a class="nav__list--hyper"
                                                                    href="{{ path('admin_index') }}">Admin</a></li>
                         <li class="nav__list--link nav__static"><a class="nav__list--hyper"
+                                                                   href="{{ path('user_index') }}">Account</a></li>
+                        <li class="nav__list--link nav__static"><a class="nav__list--hyper"
                                                                    href="{{ path('app_logout') }}">Uitloggen</a></li>
                     {% elseif is_granted('ROLE_INSTRUCTOR') %}
                         <li class="nav__list--link nav__static"><a class="nav__list--hyper"
                                                                    href="{{ path('instructor_index') }}">Instructeur</a>
                         </li>
+                        <li class="nav__list--link nav__static"><a class="nav__list--hyper"
+                                                                   href="{{ path('user_index') }}">Account</a></li>
                         <li class="nav__list--link nav__static"><a class="nav__list--hyper"
                                                                    href="{{ path('app_logout') }}">Uitloggen</a></li>
                     {% elseif is_granted('ROLE_USER') %}

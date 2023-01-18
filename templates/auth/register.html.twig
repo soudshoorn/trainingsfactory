@@ -9,8 +9,26 @@
 
         {{ form_start(registrationForm) }}
         {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.firstname, {
+            label: 'Voornaam'
+        }) }}
+        {{ form_row(registrationForm.lastname, {
+            label: 'Achternaam'
+        }) }}
+        {{ form_row(registrationForm.gender, {
+            label: 'Geslacht'
+        }) }}
+        {{ form_row(registrationForm.adress, {
+            label: 'Adress'
+        }) }}
+        {{ form_row(registrationForm.postal, {
+            label: 'Postcode'
+        }) }}
+        {{ form_row(registrationForm.city, {
+            label: 'Stad'
+        }) }}
         {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
+            label: 'Wachtwoord'
         }) }}
         {{ form_row(registrationForm.agreeTerms) }}
 

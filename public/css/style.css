@@ -436,8 +436,27 @@ div:has(> .form__input) {
     gap: 20px;
 }
 
+/*
 
+    USER
 
+*/
+
+.user__wrapper {
+    display: flex;
+}
+
+.plannedlessons {
+    max-width: 50%;
+}
+
+.user__details {
+    flex-grow: 1;
+}
+
+.user__details--form {
+    max-width: 50%;
+}
 
 
 

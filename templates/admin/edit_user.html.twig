@@ -5,6 +5,24 @@
 
         {{ form_start(form) }}
         {{ form_row(form.email) }}
+        {{ form_row(form.firstname, {
+            label: 'Voornaam'
+        }) }}
+        {{ form_row(form.lastname, {
+            label: 'Achternaam'
+        }) }}
+        {{ form_row(form.gender, {
+            label: 'Geslacht'
+        }) }}
+        {{ form_row(form.adress, {
+            label: 'Adress'
+        }) }}
+        {{ form_row(form.postal, {
+            label: 'Postcode'
+        }) }}
+        {{ form_row(form.city, {
+            label: 'Stad'
+        }) }}
         {{ form_row(form.roles) }}
         <button class="btn" type="submit">Bewerken</button>
         {{ form_end(form) }}

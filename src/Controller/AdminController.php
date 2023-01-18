@@ -27,13 +27,11 @@ class AdminController extends AbstractController
         $user = $userRepository->find($id);
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-//        dd($request);
         if ($form->isSubmitted() && $form->isRequired()) {
-
             $entityManager->persist($user);
             $entityManager->flush();
+            $this->addFlash('success', 'De gebruiker is succesvol gewijzigd');
             return $this->redirectToRoute('admin_index');
-
         }
         return $this->render('admin/edit_user.html.twig', [
             'controller_name' => 'AdminController',
@@ -54,7 +52,7 @@ class AdminController extends AbstractController
         $user = $userRepository->find($id);
         $entityManager->remove($user);
         $entityManager->flush();
-        $this->addFlash('admin', 'De gebruiker is succesvol verwijderd');
+        $this->addFlash('success', 'De gebruiker is succesvol verwijderd');
         return $this->redirectToRoute('admin_index');
     }
 }

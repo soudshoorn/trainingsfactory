@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="header__wrapper">
+                    <div class="header__description">
+                        <h2 class="header__description--title">Welkom bij Training Factory!</h2>
+                        <p class="header__description--para">Sed eget venenatis quam. Cras volutpat lacus vitae risus
+                            auctor, at imperdiet magna lacinia. Etiam et urna elementum, aliquet nunc a, placerat lacus.
+                            Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec purus sapien, efficitur
+                            vel.
+                        </p>
+                        <div class="header__description--button btn__wrapper">
+                            <a href="{{ path('app_login') }}" class="btn">Schrijf je in!</a>
+                        </div>
+                    </div>
+                    <video width="320" height="240" autoplay muted loop class="header__video">
+                        <source src="{{ asset('img/movie.mp4') }}" type="video/mp4">
+                        <source src="{{ asset('img/movie.ogg') }}" type="video/ogg">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="row">
+        <div class="line"></div>
+    </div>
+    <section class="signupforlesson">
+        <div class="container">
+            <div class="row">
+                <div class="signupforlesson__wrapper">
+                    <div class="signupforlesson__image">
+                        <img src="{{ asset('img/signupforlesson.jpg') }}" alt="" class="signupforlesson__image--img">
+                    </div>
+                    <div class="signupforlesson__description">
+                        <h5 class="signupforlesson__description--title">Schrijf je in voor een Proefles!</h5>
+                        <p class="signupforlesson__description--para">
+                            Donec purus sapien, efficitur vel tempus eu, facilisis quis velit. Nam molestie ornare
+                            euismod. Phasellus vulputate aliquam nibh nec auctor. Etiam porttitor ultricies nulla, non
+                            ullamcorper dolor pretium ut. Nunc blandit felis et dolor tempor placerat.
+                            Donec purus sapien, efficitur vel tempus eu, facilisis quis velit. Nam molestie ornare
+                            euismod. Phasellus vulputate aliquam nibh nec auctor. Etiam porttitor ultricies nulla, non
+                        </p>
+                        <div class="signupforlesson__description--button btn__wrapper">
+                            <a href="{{ path('app_lessons', {date: "now"|date('U')}) }}" class="btn">Bekijk ons lesrooster!</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="lessonlist">
+        <div class="container">
+            <div class="row">
+                <div class="line"></div>
+                <h5 class="instructor__subtitle">Deelnemers Lijst voor Les {{ lesson.sport.name }}</h5>
+                <ul class="instructor__list table__header">
+                    <li class="instructor__list--item table__header--item">Nummer</li>
+                    <li class="instructor__list--item table__header--item">Voornaam</li>
+                    <li class="instructor__list--item table__header--item">Achternaam</li>
+                </ul>
+                {% for lessonuser in lesson.getLessonUsers() %}
+                    <ul class="instructor__list">
+                        <li class="instructor__list--item">{{ loop.index }}</li>
+                        <li class="instructor__list--item">{{ lessonuser.user.firstname }}</li>
+                        <li class="instructor__list--item">{{ lessonuser.user.lastname }}</li>
+                    </ul>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

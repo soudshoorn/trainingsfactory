@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="verify">
+        <div class="container">
+            <div class="row">
+                <div class="verify__wrapper">
+                    <p class="verify__para">Wilt u {{ sport.name }} verwijderen?</p>
+                    <div class="verify__buttons">
+                        <button class="btn" onclick="location.href='{{ path('admin_index') }}'">Nee</button>
+                        <button class="btn" onclick="location.href='{{ path('admin_delete_sport', {id: sport.id}) }}'">Ja
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

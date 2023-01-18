@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Trainings Factory{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>🥊 </text></svg>">
+    <script src="https://kit.fontawesome.com/c8e4d183c2.js" crossorigin="anonymous"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css"
+          rel="stylesheet"/>
+    {% block head %}
+    {% endblock %}
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</head>
+<body>
+<nav>
+    <div class="container">
+        <div class="row">
+            <div class="nav__wrapper">
+                <div class="nav__logo">
+                    <a href="{{ path('app_index') }}">
+                        <img src="{{ asset('./assets/logo.png') }}" class="nav__logo--img"/>
+                    </a>
+                </div>
+                <ul class="nav__list">
+                    <li class="nav__list--link nav__static"><a class="nav__list--hyper" href="{{ path('app_index') }}">Home</a>
+                    </li>
+                    <li class="nav__list--link nav__static"><a class="nav__list--hyper"
+                                                               href="{{ path('app_lessons', {date: "now"|date('U')}) }}">Lesrooster</a>
+                    </li>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav__list--link nav__static"><a class="nav__list--hyper"
+                                                                   href="{{ path('instructor_index') }}">Instructeur</a>
+                        </li>
+                        <li class="nav__list--link nav__static"><a class="nav__list--hyper"
+                                                                   href="{{ path('admin_index') }}">Admin</a></li>
+                        <li class="nav__list--link nav__static"><a class="nav__list--hyper"
+                                                                   href="{{ path('user_index') }}">Account</a></li>
+                        <li class="nav__list--link nav__static"><a class="nav__list--hyper"
+                                                                   href="{{ path('app_logout') }}">Uitloggen</a></li>
+                    {% elseif is_granted('ROLE_INSTRUCTOR') %}
+                        <li class="nav__list--link nav__static"><a class="nav__list--hyper"
+                                                                   href="{{ path('instructor_index') }}">Instructeur</a>
+                        </li>
+                        <li class="nav__list--link nav__static"><a class="nav__list--hyper"
+                                                                   href="{{ path('user_index') }}">Account</a></li>
+                        <li class="nav__list--link nav__static"><a class="nav__list--hyper"
+                                                                   href="{{ path('app_logout') }}">Uitloggen</a></li>
+                    {% elseif is_granted('ROLE_USER') %}
+                        <li class="nav__list--link nav__static"><a class="nav__list--hyper"
+                                                                   href="{{ path('user_index') }}">Account</a></li>
+                        <li class="nav__list--link nav__static"><a class="nav__list--hyper"
+                                                                   href="{{ path('app_logout') }}">Uitloggen</a></li>
+                    {% else %}
+                        <li class="nav__list--link nav__static"><a class="nav__list--hyper"
+                                                                   href="{{ path('app_login') }}">Inloggen</a></li>
+                        <li class="nav__list--link nav__static"><a class="nav__list--hyper"
+                                                                   href="{{ path('app_register') }}">Registreer</a></li>
+                    {% endif %}
+
+                    <button class="btn__menu nav__icon" onclick="openMenu()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </ul>
+            </div>
+            <div class="menu__backdrop">
+                <ul class="menu__links">
+                    <li class="menu__list"><a class="menu__link" href="{{ path('app_index') }}">Home</a></li>
+                    <li class="menu__list"><a href="{{ path('app_login') }}" class="menu__link">Inloggen</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+{% for label, messages in app.flashes(['success', 'error']) %}
+    {% for message in messages %}
+        <div class="row">
+            <div class="alert alert__{{ label }}">
+                {{ message }}
+            </div>
+        </div>
+    {% endfor %}
+{% endfor %}
+<div class="main">
+    {% block body %}{% endblock %}
+</div>
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="footer__wrapper">
+                <div class="footer__title">
+                    <h3 class="footer__title--copyright">© 2023 Trainings Factory</h3>
+                    <p class="footer__title--meta">Tinwerf 16, Den Haag</p>
+                </div>
+                <ul class="footer__list">
+                    <li class="footer__list--item"><a href="{{ path('app_rules') }}">Huisregels</a></li>
+                    <li class="footer__list--item"><a href="{{ path('app_contact') }}">Contact</a></li>
+                    <li class="footer__list--item"><a href="{{ path('app_index') }}">Vacatures</a></li>
+                    <li class="footer__list--item"><a href="{{ path('app_index') }}">Socials</a></li>
+                </ul>
+                <ul class="socials__list">
+                    <li class="socials__list--item"><a href="{{ path('app_index') }}"><i
+                                    class="fab fa-instagram"></i></a></li>
+                    <li class="socials__list--item"><a href="{{ path('app_index') }}"><i class="fab fa-tiktok"></i></a>
+                    </li>
+                    <li class="socials__list--item"><a href="{{ path('app_index') }}"><i class="fab fa-twitter"></i></a>
+                    </li>
+                    <li class="socials__list--item"><a href="{{ path('app_index') }}"><i
+                                    class="fab fa-discord"></i></a></li>
+                    <li class="socials__list--item"><a href="{{ path('app_index') }}"><i class="fab fa-youtube"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+<script type="text/javascript">
+    function openMenu() {
+        document.body.classList.toggle("menu--open");
+    }
+</script>
+</body>
+</html>

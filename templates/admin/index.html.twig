@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <section class="instructor">
+        <div class="container">
+            <div class="row">
+                <div class="instructor__header">
+                    <h1 class="instructor__header--title">Admin Dashboard</h1>
+                </div>
+                <div class="line"></div>
+                <h5 class="instructor__subtitle">Gebruikers</h5>
+                <ul class="instructor__list table__header">
+                    <li class="instructor__list--item table__header--item">Email</li>
+                    <li class="instructor__list--item table__header--item">Rol</li>
+                    <li class="instructor__list--item table__header--item">Bewerken</li>
+                </ul>
+                {% for user in users %}
+                    <ul class="instructor__list">
+                        <li class="instructor__list--item">{{ user.email }}</li>
+                        <li class="instructor__list--item">{{ user.roles[0] }}</li>
+                        <li class="instructor__list--item"><a href="{{ path('admin_edit_user', {id: user.id}) }}"><i
+                                        class="fas fa-pencil-alt icon"></i></a><a
+                                    href="{{ path('admin_delete_user_page', {id: user.id}) }}"><i
+                                        class="fas fa-trash icon"></i></a></li>
+                    </ul>
+                {% endfor %}
+                <div class="line"></div>
+                <div class="instructor__header">
+                    <h5 class="instructor__subtitle">Sportvormen</h5>
+                    <div class="btn__wrapper">
+                        <a href="{{ path('admin_new_sport') }}" class="instructor__header--btn btn">Nieuwe Sport</a>
+                    </div>
+                </div>
+                <ul class="instructor__list table__header">
+                    <li class="instructor__list--item table__header--item">Email</li>
+                    <li class="instructor__list--item table__header--item">Rol</li>
+                    <li class="instructor__list--item table__header--item">Bewerken</li>
+                </ul>
+                {% for sport in sports %}
+                    <ul class="instructor__list">
+                        <li class="instructor__list--item">{{ sport.name }}</li>
+                        <li class="instructor__list--item">{{ sport.image }}</li>
+                        <li class="instructor__list--item"><a href="{{ path('admin_edit_sport', {id: sport.id}) }}"><i
+                                        class="fas fa-pencil-alt icon"></i></a><a
+                                    href="{{ path('admin_delete_sport_page', {id: sport.id}) }}"><i
+                                        class="fas fa-trash icon"></i></a></li>
+                    </ul>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

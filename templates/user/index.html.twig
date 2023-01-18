@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="user">
+        <div class="container">
+            <div class="row">
+                <div class="user__wrapper">
+                    <div class="user__details">
+                        <h2 class="user__sectiontitle">Uw gegevens</h2>
+                        <div class="user__details--form">
+                            {{ form_start(form) }}
+                            {{ form_row(form.email) }}
+                            {{ form_row(form.firstname, {
+                                label: 'Voornaam'
+                            }) }}
+                            {{ form_row(form.lastname, {
+                                label: 'Achternaam'
+                            }) }}
+                            {{ form_row(form.gender, {
+                                label: 'Geslacht'
+                            }) }}
+                            {{ form_row(form.adress, {
+                                label: 'Adress'
+                            }) }}
+                            {{ form_row(form.postal, {
+                                label: 'Postcode'
+                            }) }}
+                            {{ form_row(form.city, {
+                                label: 'Stad'
+                            }) }}
+                            <div class="btn__wrapper">
+                                <button type="submit" class="btn">Wijzigen</button>
+                            </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                    <div class="plannedlessons">
+                        <h2 class="user__sectiontitle">Uw lessen</h2>
+                        {% set lessonsCount = 0 %}
+                        {% if lessons or lessonsCount == 0 %}
+                            {% for lessonUser in lessonsUser %}
+                                {% if lessonUser.lesson.date|date("U") > "now"|date("U") %}
+                                    {% set lessonsCount = lessonsCount + 1 %}
+                                    <h4 class="plannedlessons__title">{{ lessonUser.lesson.sport.name }}</h4>
+                                    {{ lessonUser.lesson.date|date("d/m/Y") }}
+                                    Start Tijd:
+                                    {{ lessonUser.lesson.beginTime|date("H:i") }}
+                                    <div class="btn__wrapper">
+                                        <a class="btn" href='{{ path('app_signout', {lessonUser: lessonUser.id}) }}'>
+                                            Uitschrijven
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            {% if lessonsCount == 0 %}
+                                Je hebt geen ingeplande lessen.
+                            {% endif %}
+                        {% else %}
+                            Je hebt geen ingeplande lessen.
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

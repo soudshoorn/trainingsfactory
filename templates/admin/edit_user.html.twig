@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="auth__form row">
+
+        {{ form_start(form) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.roles) }}
+        <button class="btn" type="submit">Bewerken</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

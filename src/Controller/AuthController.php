@@ -45,13 +45,6 @@ class AuthController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
-//            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-//                (new TemplatedEmail())
-//                    ->from(new Address('no-reply@trainingsfactory.nl', 'Trainings Factory'))
-//                    ->to($user->getEmail())
-//                    ->subject('Please Confirm your Email')
-//                    ->htmlTemplate('auth/confirmation_email.html.twig')
-//            );
 
             return $this->redirectToRoute('app_login');
         }
@@ -60,24 +53,6 @@ class AuthController extends AbstractController
         return $this->render('auth/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
-    }
-
-    #[Route('/verify/email', name: 'app_verify_email')]
-    public function verifyUserEmail(Request $request, TranslatorInterface $translator): Response
-    {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-        try {
-            $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
-        } catch (VerifyEmailExceptionInterface $exception) {
-            $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
-
-            return $this->redirectToRoute('app_register');
-        }
-
-        $this->addFlash('success', 'Your email address has been verified.');
-
-        return $this->redirectToRoute('app_register');
     }
 
     #[Route('/login', name: 'app_login')]

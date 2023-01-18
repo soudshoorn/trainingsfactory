@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="verify">
+        <div class="container">
+            <div class="row">
+                <div class="verify__wrapper">
+                    <p class="verify__para">Weet u zeker dat u deze les wilt reserveren?</p>
+                    <div class="verify__buttons">
+                        <button class="btn" onclick="location.href='{{ path('app_index') }}'">Nee</button>
+                        <button class="btn" onclick="location.href='{{ path('app_signup', {lesson: lesson.id}) }}'">Ja
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

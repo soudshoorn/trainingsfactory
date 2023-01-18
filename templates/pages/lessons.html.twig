@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="lessons">
+        <div class="container">
+            <div class="row">
+                <div class="lessons__date">
+                    {{ form_start(form) }}
+                    <div class="lessons__date--wrapper">
+                        {{ form_widget(form) }}
+                        <button class="lessons__date--btn" type="submit"><i class="fas fa-sync-alt"></i></button>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+
+                <h3 class="lessons__title">Beschikbare lessen</h3>
+                <ul class="lessons__list">
+                    {% if lessons|length == 0 %}
+                        <p class="lessons__none">Er staan geen lessen gepland voor deze dag.</p>
+                    {% endif %}
+                    {% for lesson in lessons %}
+                        {% if app.user in lesson.getlessonusers() %}
+                            ja
+                        {% endif %}
+                        <li class="lessons__list--item">
+                            <img src="{{ asset(lesson.sport.image) }}" alt="" class="lessons__item--img">
+                            <div class="lesson__item--description">
+                                <h3 class="lesson__description--title">{{ lesson.sport.name }}</h3>
+                                <p class="lesson__description--start">Start: {{ lesson.begintime|date('H:i') }}</p>
+                                <p class="lesson__description--start">Tot: {{ lesson.endtime|date('H:i') }}</p>
+                                <div class="btn__wrapper">
+                                    {% if app.user %}
+                                        <a href="{{ path('app_lesson_verify', {id: lesson.id}) }}" class="btn">Inschrijven</a>
+                                    {% else %}
+                                        <a href="{{ path('app_login') }}" class="btn">Login</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -2,20 +2,27 @@
 
 
 {% block body %}
-    {% for message in app.flashes('admin') %}
-        <p>
-            {{ message }}
-        </p>
-    {% endfor %}
-    {% for user in users %}
-        {% if app.user.id == user.id %}
-
-        {% else %}
-            {{ user.email }}
-            {{ user.roles[0] }}
-            <button onclick="location.href='{{ path('admin_editUser', {userId: user.id}) }}'">Edit</button>
-            <button onclick="location.href='{{ path('admin_deleteUserPage', {userId: user.id}) }}'">Delete</button>
-            <br>
-        {% endif %}
-    {% endfor %}
+    <section class="instructor">
+        <div class="container">
+            <div class="row">
+                <div class="instructor__header">
+                    <h1 class="instructor__header--title">Admin Dashboard</h1>
+                </div>
+                <div class="line"></div>
+                <h5 class="instructor__subtitle">Mijn Lessen</h5>
+                <ul class="instructor__list table__header">
+                    <li class="instructor__list--item table__header--item">Email</li>
+                    <li class="instructor__list--item table__header--item">Rol</li>
+                    <li class="instructor__list--item table__header--item">Bewerken</li>
+                </ul>
+                {% for user in users %}
+                    <ul class="instructor__list">
+                        <li class="instructor__list--item">{{ user.email }}</li>
+                        <li class="instructor__list--item">{{ user.roles[0] }}</li>
+                        <li class="instructor__list--item"><a href="{{ path('admin_edit_user', {id: user.id}) }}"><i class="fas fa-pencil-alt icon"></i></a><a href="{{ path('admin_delete_user_page', {id: user.id}) }}"><i class="fas fa-trash icon"></i></a></li>
+                    </ul>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
 {% endblock %}

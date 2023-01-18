@@ -31,6 +31,9 @@ class Lesson
     #[ORM\OneToMany(mappedBy: 'lesson', targetEntity: LessonUser::class)]
     private Collection $lessonUsers;
 
+    #[ORM\ManyToOne(inversedBy: 'lessons')]
+    private ?User $instructor = null;
+
     public function __construct()
     {
         $this->user = new ArrayCollection();
@@ -116,6 +119,18 @@ class Lesson
                 $lessonUser->setLesson(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getInstructor(): ?User
+    {
+        return $this->instructor;
+    }
+
+    public function setInstructor(?User $instructor): self
+    {
+        $this->instructor = $instructor;
 
         return $this;
     }

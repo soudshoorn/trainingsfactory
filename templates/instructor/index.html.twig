@@ -16,6 +16,7 @@
                     <li class="instructor__list--item table__header--item">Begin Tijd</li>
                     <li class="instructor__list--item table__header--item">Eind Tijd</li>
                     <li class="instructor__list--item table__header--item">Ingeschreven Leden</li>
+                    <li class="instructor__list--item table__header--item">Bewerken</li>
                 </ul>
                 {% for lesson in lessons %}
                     <ul class="instructor__list">
@@ -23,7 +24,8 @@
                         <li class="instructor__list--item">{{ lesson.date|date("jS F") }}</li>
                         <li class="instructor__list--item">{{ lesson.begintime|date("H:i") }}</li>
                         <li class="instructor__list--item">{{ lesson.endtime|date("H:i") }}</li>
-                        <li class="instructor__list--item">{{ lesson.getUser()|length }}</li>
+                        <li class="instructor__list--item">{{ lesson.getLessonUsers().count }}</li>
+                        <li class="instructor__list--item"><a href="{{ path('instructor_lesson_edit', {id: lesson.id}) }}"><i class="fas fa-pencil-alt icon"></i></a><a href="{{ path('instructor_lesson_delete', {id: lesson.id}) }}"><i class="fas fa-trash icon"></i></a></li>
                     </ul>
                 {% endfor %}
             </div>

@@ -38,12 +38,19 @@ class InstructorController extends AbstractController
         $form = $this->createForm(NewLessonType::class, $lesson);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->doctrine->getManager();
             $lesson->setInstructor($this->getUser());
             $em->persist($lesson);
             $em->flush();
+
+            $this->addFlash(
+                'success',
+                'De les is succesvol toegevoegd.'
+            );
+            return $this->redirectToRoute('instructor_index');
         }
+
 
         return $this->render('instructor/lesson/new.html.twig', [
             'form' => $form->createView(),
@@ -52,13 +59,55 @@ class InstructorController extends AbstractController
     }
 
     #[Route('/instructor/lesson/edit/{id}', name: 'instructor_lesson_edit')]
-    public function editLesson(LessonRepository $lessonRepository, int $id): Response
+    public function editLesson(LessonRepository $lessonRepository, int $id, Request $request): Response
     {
-        $lessons = $lessonRepository->find($id);
+        $lesson = $lessonRepository->find($id);
+
+        if (!$lesson->getInstructor() == $this->getUser() || !in_array('ROLE_ADMIN', $this->getUser()->getRoles(), true)) {
+            $this->addFlash(
+                'error',
+                'Je mag deze les niet bewerken.'
+            );
+            return $this->redirectToRoute('instructor_index');
+        }
+
+        $form = $this->createForm(NewLessonType::class, $lesson);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->doctrine->getManager();
+            $lesson->setInstructor($this->getUser());
+            $em->persist($lesson);
+            $em->flush();
+
+            $this->addFlash(
+                'success',
+                'De les is succesvol gewijzigd.'
+            );
+            return $this->redirectToRoute('instructor_index');
+        }
+
 
         return $this->render('instructor/lesson/new.html.twig', [
-            'lessons' => $lessons,
+            'form' => $form->createView(),
             'controller_name' => 'InstructorController',
         ]);
+    }
+
+    #[Route('/instructor/lesson/delete/{id}', name: 'instructor_lesson_delete')]
+    public function deleteLesson(Request $request, int $id, LessonRepository $lessonRepository): Response
+    {
+        $lesson = $lessonRepository->find($id);
+
+        $em = $this->doctrine->getManager();
+        $em->remove($lesson);
+        $em->persist();
+
+        $this->addFlash(
+            'success',
+            'De les is succesvol verwijderd.'
+        );
+        return $this->redirectToRoute('instructor_index');
+
     }
 }

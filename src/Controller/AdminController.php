@@ -21,10 +21,10 @@ class AdminController extends AbstractController
             'users' => $users
         ]);
     }
-    #[Route('/edit-user/{userId}', name: 'admin_editUser')]
-    public function editUser(UserRepository $userRepository, $userId, Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/user/edit/{id}', name: 'admin_edit_user')]
+    public function editUser(UserRepository $userRepository, int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
-        $user = $userRepository->find($userId);
+        $user = $userRepository->find($id);
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 //        dd($request);
@@ -35,28 +35,26 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('admin_index');
 
         }
-        return $this->render('admin/editUser.html.twig', [
+        return $this->render('admin/edit_user.html.twig', [
             'controller_name' => 'AdminController',
             'form'=> $form->createView(),
         ]);
     }
-    #[Route('/delete-user/{userId}', name: 'admin_deleteUserPage')]
-    public function deleteUserPage(UserRepository $userRepository, $userId): Response
+    #[Route('/user/delete/verify/{id}', name: 'admin_delete_user_page')]
+    public function deleteUserPage(UserRepository $userRepository, int $id): Response
     {
-        $user = $userRepository->find($userId);
-        return $this->render('admin/deleteUser.html.twig', [
+        $user = $userRepository->find($id);
+        return $this->render('admin/delete_user.html.twig', [
             'user' => $user
         ]);
     }
-    #[Route('/deleteUser/{userId}', name: 'admin_deleteUser')]
-    public function deleteUser(UserRepository $userRepository, $userId, EntityManagerInterface $entityManager): Response
+    #[Route('/user/delete/{id}', name: 'admin_delete_user')]
+    public function deleteUser(UserRepository $userRepository, $id, EntityManagerInterface $entityManager): Response
     {
-        $user = $userRepository->find($userId);
-//        dd($user);
+        $user = $userRepository->find($id);
         $entityManager->remove($user);
-//        dd($entityManager);
         $entityManager->flush();
-        $this->addFlash('admin', 'De gebruiker is verwijdert');
+        $this->addFlash('admin', 'De gebruiker is succesvol verwijderd');
         return $this->redirectToRoute('admin_index');
     }
 }

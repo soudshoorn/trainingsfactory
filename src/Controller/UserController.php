@@ -37,33 +37,40 @@ class UserController extends AbstractController
     #[Route('/lesson/{lesson}', name: 'app_lesson')]
     public function lessonVerification($lesson): Response
     {
-        return $this->render('pages/lesson.html.twig', [
+        return $this->render('pages/verify.html.twig', [
             'lesson' => $lesson,
         ]);
     }
 
-    #[Route('/signUp/{lesson}', name: 'app_signUp')]
-    public function lessonSignUp($lesson, EntityManagerInterface $entityManager, UserInterface $user, LessonRepository $lessonRepository): Response
+    #[Route('/signup/{lesson}', name: 'app_signup')]
+    public function lessonSignUp($lesson, EntityManagerInterface $entityManager, UserInterface $user, LessonRepository $lessonRepository, LessonUserRepository $lessonUserRepository): Response
     {
         $signUp = new LessonUser();
         $lesson = $lessonRepository->find($lesson);
+        $lessonusercheck = $lessonUserRepository->findBy(['lesson' => $lesson, 'user' => $this->getUser()]);
+        if($lessonusercheck) {
+            $this->addFlash('error', 'U staat al ingeschreven voor deze les.');
+            return $this->redirectToRoute('app_index');
+        }
+
         $signUp->setLesson($lesson);
         $signUp->setUser($user);
 
+
         $entityManager->persist($signUp);
         $entityManager->flush();
-        $this->addFlash('signUp', 'U bent ingegscheven.');
+        $this->addFlash('success', 'U bent succesvol ingeschreven.');
         return $this->redirectToRoute('app_index');
     }
 
-    #[Route('/signOut/{lessonUser}', name: 'app_signOut')]
+    #[Route('/signout/{lessonUser}', name: 'app_signout')]
     public function lessonSignOut($lessonUser, EntityManagerInterface $entityManager, LessonUserRepository $lessonUserRepository): Response
     {
         $lesson = $lessonUserRepository->find($lessonUser);
         $entityManager->remove($lesson);
         $entityManager->flush();
 
-        $this->addFlash('signOut', 'U bent uitgegschreven.');
+        $this->addFlash('success', 'U bent succeesvol uitgeschreven.');
         return $this->redirectToRoute('app_index');
     }
 

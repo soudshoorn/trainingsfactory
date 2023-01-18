@@ -511,4 +511,48 @@ div:has(> .form__input) {
     .nav__static {
         display: none;
     }
+
+    .header__wrapper {
+        flex-direction: column-reverse;
+    }
+
+    .user__wrapper {
+        flex-direction: column-reverse;
+    }
+
+    .user__details, .user__details--form {
+        max-width: 100%;
+    }
+
+    .header__video {
+        height: 200px;
+        width: 100%;
+    }
+
+    .header__description {
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .header__description--para {
+        max-width: 100%;
+    }
+
+    .signupforlesson__wrapper {
+        flex-direction: column;
+    }
+
+    .signupforlesson__image {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 880px) {
+    .footer__list {
+        flex-direction: column;
+    }
+
+    .footer__title {
+        display: none;
+    }
 }
